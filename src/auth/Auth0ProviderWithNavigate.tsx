@@ -1,6 +1,5 @@
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
 
-
 type Props = {
   children: React.ReactNode;
 };
@@ -13,9 +12,6 @@ function Auth0ProviderWithNavigate({ children }: Props) {
   if (!domain || !clientId || !redirectUri) {
     throw Error("Unable to initialize auth0. something missing");
   }
-  console.log(domain)
-  console.log(clientId)
-  console.log(redirectUri)
 
   // appState: store some data that we might need later.EX: current url that user on before we redirect to the login
 
@@ -23,6 +19,8 @@ function Auth0ProviderWithNavigate({ children }: Props) {
     appState?: AppState,
     user?: User
   ) => {
+    console.log("User data:");
+
     console.log(user);
   };
 
