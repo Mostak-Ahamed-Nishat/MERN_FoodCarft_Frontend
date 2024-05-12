@@ -20,7 +20,6 @@ function Auth0ProviderWithNavigate({ children }: Props) {
     user?: User
   ) => {
     console.log("User data:");
-
     console.log(user);
   };
 
