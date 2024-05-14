@@ -1,17 +1,17 @@
-import { useCreateUser } from "@/api/MyUserApi";
 import { AppState, Auth0Provider, User } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   children: React.ReactNode;
 };
 
 function Auth0ProviderWithNavigate({ children }: Props) {
-  //My custom hooks for create user
-  const { createUser } = useCreateUser();
-
+  
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_REDIRECT_URI;
+
+  const navigate = useNavigate();
 
   if (!domain || !clientId || !redirectUri) {
     throw Error("Unable to initialize auth0. something missing");
@@ -19,14 +19,9 @@ function Auth0ProviderWithNavigate({ children }: Props) {
 
   // appState: store some data that we might need later.EX: current url that user on before we redirect to the login
 
-  const onTheTimeThatRedirecting = (
-    appState?: AppState,
-    user?: User
-  ) => {
+  const onTheTimeThatRedirecting = (appState?: AppState, user?: User) => {
     //if user successfully created through Auth0 then create user into our DB using auth0 data; user.sub=auth0Id
-    if (user?.sub && user?.email) {
-      createUser({ auth0Id: user?.sub, email: user?.email });
-    }
+    navigate("/auth-callback");
   };
 
   return (
