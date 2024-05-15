@@ -1,7 +1,7 @@
 // All the hooks that will interact with the user api endpoint will be here
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 
 // ************Create a user
@@ -69,6 +69,7 @@ export const useUpdateMyUser = () => {
     if (!response.ok) {
       throw new Error("Failed to update user information /f");
     }
+    return response.json();
   };
 
   const {
@@ -92,3 +93,37 @@ export const useUpdateMyUser = () => {
 };
 
 // *********** Get the user data
+
+export const useGetUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getMyUserRequest = async () => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to get user data from db");
+    }
+    return response.json();
+  };
+
+  const {
+    data: currentUser,
+    isLoading,
+    isError,
+    error,
+  } = useQuery("fetchCurrentUser", getMyUserRequest);
+
+  if (error) {
+    toast.error(error.toString());
+  }
+
+  return { currentUser, isLoading };
+};
