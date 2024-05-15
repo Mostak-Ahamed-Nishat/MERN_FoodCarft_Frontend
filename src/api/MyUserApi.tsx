@@ -2,8 +2,9 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
+import { toast } from "sonner";
 
-// Create a user
+// ************Create a user
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type CreateUserRequest = {
@@ -40,7 +41,7 @@ export const useCreateUser = () => {
   return { createUser, isError, isLoading, isSuccess };
 };
 
-//Update a user
+//************Update a user
 type UpdateMyUserRequest = {
   name: string;
   city: string;
@@ -79,5 +80,15 @@ export const useUpdateMyUser = () => {
     reset,
   } = useMutation(updateMyUserRequest);
 
+  if (isSuccess) {
+    toast.success("Your data is updated");
+  }
+
+  if (isError) {
+    toast.error("Failed to update data");
+  }
+
   return { updateUser, isLoading, isError, isSuccess, error, reset };
 };
+
+// *********** Get the user data
