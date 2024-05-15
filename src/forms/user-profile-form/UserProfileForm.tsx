@@ -14,6 +14,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import LoadingButton from "@/components/LoadingButton";
+import { SafeUser } from "@/types";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   //email is optional because it's readonly field. No need to add validation it'll always be there
@@ -30,16 +32,24 @@ const formSchema = z.object({
 //extract the type
 type userFormData = z.infer<typeof formSchema>;
 
+//Update profile props type
 type Props = {
   onSave: (userProfileData: userFormData) => void;
   isLoading: boolean;
+  currentUser: SafeUser;
 };
 
 //********Update profile component
-const UserProfileForm = ({ onSave, isLoading }: Props) => {
+const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
   const form = useForm<userFormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: currentUser,
   });
+
+  //Set default value
+  useEffect(() => {
+    form.reset(currentUser);
+  }, [currentUser, form]);
 
   return (
     <div className="py-10">
@@ -145,8 +155,5 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
     </div>
   );
 };
-
-
-
 
 export default UserProfileForm;

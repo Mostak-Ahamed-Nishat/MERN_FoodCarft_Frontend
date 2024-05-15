@@ -1,4 +1,4 @@
-export type User = {
+export type SafeUser = {
   _id: string;
   email: string;
   name: string;

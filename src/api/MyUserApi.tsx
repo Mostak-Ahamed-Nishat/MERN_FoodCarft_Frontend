@@ -1,5 +1,6 @@
 // All the hooks that will interact with the user api endpoint will be here
 
+import { SafeUser } from "@/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
@@ -94,7 +95,7 @@ export const useUpdateMyUser = () => {
 
 // *********** Get the user data
 
-export const useGetUser = () => {
+export const useGetUser = (): Promise<SafeUser> => {
   const { getAccessTokenSilently } = useAuth0();
 
   const getMyUserRequest = async () => {

@@ -9,7 +9,17 @@ function UserProfilePage() {
     return <span>Loading profile data..</span>;
   }
 
-  return <UserProfileForm onSave={updateUser} isLoading={isLoading} />;
+  if (!currentUser) {
+    return <span>Unable to load user profile data</span>;
+  }
+
+  return (
+    <UserProfileForm
+      currentUser={currentUser}
+      onSave={updateUser}
+      isLoading={isLoading}
+    />
+  );
 }
 
 export default UserProfilePage;
