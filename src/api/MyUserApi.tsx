@@ -1,7 +1,9 @@
-// All the hooks that will interact with the  my user api endpoint
+// All the hooks that will interact with the user api endpoint will be here
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
+
+// Create a user
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 type CreateUserRequest = {
@@ -36,4 +38,46 @@ export const useCreateUser = () => {
   } = useMutation(createMyUserRequest);
 
   return { createUser, isError, isLoading, isSuccess };
+};
+
+//Update a user
+type UpdateMyUserRequest = {
+  name: string;
+  city: string;
+  addressLine1: string;
+  country: string;
+};
+
+export const useUpdateMyUser = () => {
+  //Get the token
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateMyUserRequest = async (formData: UpdateMyUserRequest) => {
+    const accessToken = await getAccessTokenSilently();
+
+    //Send the request to API
+    const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update user information /f");
+    }
+  };
+
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    isError,
+    isSuccess,
+    error,
+    reset,
+  } = useMutation(updateMyUserRequest);
+
+  return { updateUser, isLoading, isError, isSuccess, error, reset };
 };
