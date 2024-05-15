@@ -10,12 +10,13 @@ const AppRoutes = () => {
       <Route
         path="/"
         element={
-          <Layout>
+          <Layout showHero>
             <HomePage />
           </Layout>
         }
       />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
+      {/* User profile route  */}
       <Route
         path="/user-profile"
         element={
