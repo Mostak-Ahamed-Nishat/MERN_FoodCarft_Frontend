@@ -95,7 +95,12 @@ export const useUpdateMyUser = () => {
 
 // *********** Get the user data
 
-export const useGetUser = (): Promise<SafeUser> => {
+type UseGetUserResult = {
+  currentUser: SafeUser | undefined;
+  isLoading: boolean;
+};
+
+export const useGetUser = (): UseGetUserResult => {
   const { getAccessTokenSilently } = useAuth0();
 
   const getMyUserRequest = async () => {
@@ -118,7 +123,6 @@ export const useGetUser = (): Promise<SafeUser> => {
   const {
     data: currentUser,
     isLoading,
-    isError,
     error,
   } = useQuery("fetchCurrentUser", getMyUserRequest);
 
