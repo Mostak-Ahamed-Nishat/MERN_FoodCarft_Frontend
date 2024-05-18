@@ -25,6 +25,15 @@ function UsernameMenu() {
           </Link>
         </DropdownMenuItem>
         <Separator />
+        <DropdownMenuItem>
+          <Link
+            to="/manage-restaurant"
+            className="font-bold hover:text-orange-500"
+          >
+            Manage Restaurant
+          </Link>
+        </DropdownMenuItem>
+        <Separator />
         <DropdownMenuItem className="py-3">
           <Button
             className="flex flex-1 font-bold bg-orange-500"
