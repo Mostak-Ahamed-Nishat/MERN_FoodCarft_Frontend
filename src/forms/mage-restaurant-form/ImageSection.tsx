@@ -5,10 +5,13 @@ import {
   FormItem,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useFormContext } from "react-hook-form";
 
 export default function ImageSection() {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+
+  const existingImageUrl = watch("imageUrl");
 
   return (
     <div className=" space-y-2">
@@ -20,6 +23,17 @@ export default function ImageSection() {
         </FormDescription>
       </div>
       <div className="flex flex-col gap-8 w-[50%]">
+        {existingImageUrl && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={existingImageUrl}
+              // src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+              alt="Restaurant Image"
+              className="rounded-md object-cover w-full"
+            />
+          </AspectRatio>
+        )}
+
         <FormField
           control={control}
           name="imageFile"
@@ -27,7 +41,7 @@ export default function ImageSection() {
             <FormItem>
               <FormControl>
                 <Input
-                  className="bg-white"
+                  className="bg-white mt-20"
                   type="file"
                   accept=".jpg,.jpeg,.png"
                   onChange={(event) =>

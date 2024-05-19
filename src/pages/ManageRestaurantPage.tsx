@@ -1,13 +1,18 @@
+import {
+  useCreateMyRestaurant,
+  useGetMyRestaurant,
+} from "@/api/MyRestaurantApi";
 import ManageRestaurantForm from "@/forms/mage-restaurant-form/ManageRestaurantForm";
-import React from "react";
 
 export default function ManageRestaurantPage() {
+  const { createRestaurant, isLoading } = useCreateMyRestaurant();
+  const { restaurant } = useGetMyRestaurant();
+
   return (
     <ManageRestaurantForm
-      onSave={function (restaurantFormData: FormData): void {
-        throw new Error("Function not implemented.");
-      }}
-      isLoading={false}
+      onSave={createRestaurant}
+      isLoading={isLoading}
+      restaurant={restaurant}
     />
   );
 }
