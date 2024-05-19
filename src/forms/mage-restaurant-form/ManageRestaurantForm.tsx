@@ -6,6 +6,9 @@ import DetailsSection from "./DetailsSection";
 import CuisinesSection from "./CuisinesSection";
 import { Separator } from "@/components/ui/separator";
 import MenuSection from "./MenuSection";
+import ImageSection from "./ImageSection";
+import LoadingButton from "@/components/LoadingButton";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   onSave: (restaurantFormData: FormData) => void;
@@ -74,14 +77,16 @@ function ManageRestaurantForm({ onSave, isLoading }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" space-y-8 bg-gray-50 p-10 rounded-lg"
+        className=" space-y-8 bg-gray-50 p-10 rounded-lg my-10 "
       >
-        <CuisinesSection />
-
-        <Separator className="my-4" />
         <DetailsSection />
         <Separator className="my-4" />
+        <CuisinesSection />
+        <Separator className="my-4" />
         <MenuSection />
+        <Separator className="my-4" />
+        <ImageSection />
+        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
       </form>
     </Form>
   );
