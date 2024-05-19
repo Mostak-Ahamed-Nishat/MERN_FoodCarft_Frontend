@@ -90,7 +90,7 @@ function ManageRestaurantForm({ onSave, isLoading, restaurant }: Props) {
     };
 
     form.reset(updatedRestaurant);
-  }, [form, restaurant]);
+  }, [form, restaurant,onSave]);
 
   const onSubmit = (formDataJson: RestaurantFormData) => {
     const formData = new FormData();
