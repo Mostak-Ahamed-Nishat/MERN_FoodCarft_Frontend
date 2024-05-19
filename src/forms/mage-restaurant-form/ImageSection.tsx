@@ -22,14 +22,14 @@ export default function ImageSection() {
           search results. Adding a new image will overwrite the existing one.
         </FormDescription>
       </div>
-      <div className="flex flex-col gap-8 w-[50%]">
+      <div className="flex flex-col gap-8 md:w-[50%]">
         {existingImageUrl && (
           <AspectRatio ratio={16 / 9}>
             <img
               src={existingImageUrl}
               // src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
               alt="Restaurant Image"
-              className="rounded-md object-cover w-full"
+              className="rounded-md object-cover w-full py-6"
             />
           </AspectRatio>
         )}
@@ -41,7 +41,7 @@ export default function ImageSection() {
             <FormItem>
               <FormControl>
                 <Input
-                  className="bg-white mt-20"
+                  className="bg-white mt-16 md:mt-20"
                   type="file"
                   accept=".jpg,.jpeg,.png"
                   onChange={(event) =>

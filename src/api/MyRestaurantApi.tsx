@@ -41,13 +41,13 @@ export const useCreateMyRestaurant = () => {
 
   if (error) {
     console.log(error);
-
     toast.error("Unable to create restaurant");
   }
 
   return { createRestaurant, isLoading };
 };
 
+//Get restaurant
 export const useGetMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
   const getRestaurantRequest = async () => {
@@ -63,7 +63,6 @@ export const useGetMyRestaurant = () => {
       throw new Error("Failed to get data.");
     }
 
-
     if (response.ok) {
       console.log("**Everything is ok***");
     }
@@ -77,4 +76,44 @@ export const useGetMyRestaurant = () => {
   );
 
   return { restaurant, isLoading };
+};
+
+//Update restaurant
+export const useUpdateMyRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const updateMyRestaurantRequest = async (
+    restaurantFormData: FormData
+  ): Promise<Restaurant> => {
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/api/my/restaurant`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: restaurantFormData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Unable to update");
+    }
+
+    return response.json();
+  };
+
+  const {
+    mutate: updateRestaurant,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useMutation(updateMyRestaurantRequest);
+
+  if (isError) {
+    toast.error("Unable to update data");
+  }
+
+  if (isSuccess) {
+    toast.success("Data updated successfully");
+  }
+
+  return { updateRestaurant, isLoading };
 };
