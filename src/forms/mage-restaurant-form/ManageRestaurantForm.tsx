@@ -40,21 +40,14 @@ const formSchema = z.object({
   cuisines: z.array(z.string()).nonempty({
     message: "Please select at least one item",
   }),
-  menuItem: z
-    .array(
-      z.object({
-        name: z.string().min(3, "Item name required"),
-        price: z.coerce.number({
-          required_error: "Item Price is required",
-          invalid_type_error: "Must be a valid number",
-        }),
-      })
-    )
-    .nonempty({
-      message: "Please select at least one item",
-    }),
-
-  imageFIle: z.instanceof(File, { message: "Image is required" }),
+  menuItems: z.array(
+    z.object({
+      name: z.string().min(1, "Item name required"),
+      price: z.coerce.number().min(1, "price is required"),
+    })
+  ),
+  imageUrl: z.string().optional(),
+  imageFile: z.instanceof(File, { message: "image is required" }).optional(),
 });
 
 //Form data type
@@ -65,6 +58,7 @@ const onSubmit = (formDataJson: formData) => {
 };
 
 function ManageRestaurantForm({ onSave, isLoading }: Props) {
+
   const form = useForm<formData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,6 +75,7 @@ function ManageRestaurantForm({ onSave, isLoading }: Props) {
       >
         <DetailsSection />
         <Separator className="my-4" />
+
         <CuisinesSection />
         <Separator className="my-4" />
         <MenuSection />
