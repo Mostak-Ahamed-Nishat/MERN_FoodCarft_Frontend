@@ -17,41 +17,47 @@ function PaginationSelector({ page, pages, onPageChange }: Props) {
   const pageNumber = [];
 
   // if pages=3 => pageNumber=[1,2,3]
-
   for (let i = 1; i <= pages; i++) {
     pageNumber.push(i);
   }
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious href="#" onClick={() => onPageChange(page - 1)} />
-        </PaginationItem>
-        {pageNumber.map((number) => (
-          <PaginationItem>
-            <PaginationLink
-              href="#"
-              onClick={() => onPageChange(number)}
-              isActive={page == number}
-            >
-              {number}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+    <div className="mt-6">
+      <Pagination>
+        <PaginationContent>
+          {page !== 1 && (
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => onPageChange(page - 1)}
+              />
+            </PaginationItem>
+          )}
+          {pageNumber.map((number) => (
+            <PaginationItem>
+              <PaginationLink
+                href="#"
+                onClick={() => onPageChange(number)}
+                isActive={page == number}
+              >
+                {number}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
 
-        {/* 
+          {/* 
             pageNumber =[1,2,3]
             page?=3 hide next button 
         */}
 
-        {page !== pageNumber.length && (
-          <PaginationItem>
-            <PaginationNext href="#" onClick={() => onPageChange(page + 1)} />
-          </PaginationItem>
-        )}
-      </PaginationContent>
-    </Pagination>
+          {page !== pageNumber.length && (
+            <PaginationItem>
+              <PaginationNext href="#" onClick={() => onPageChange(page + 1)} />
+            </PaginationItem>
+          )}
+        </PaginationContent>
+      </Pagination>
+    </div>
   );
 }
 

@@ -6,11 +6,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { SearchForm } from "../components/SearchBar";
 import PaginationSelector from "@/components/PaginationSelector";
+import CuisineFilter from "@/components/CuisineFilter";
 
 //for search by cuisine or restaurant name
 export type SearchState = {
   searchQuery: string;
   page: number;
+  selectedCuisines: string[];
 };
 
 export default function SearchPage() {
@@ -20,7 +22,19 @@ export default function SearchPage() {
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: "",
     page: 1,
+    selectedCuisines: [],
   });
+
+  const [isExpended, setIsExpended] = useState<boolean>(false);
+
+  //Selected cuisines list
+  const setSelectedCuisines = (selectedCuisines: string[]) => {
+    setSearchState((prevState) => ({
+      ...prevState,
+      selectedCuisines,
+      page: 1,
+    }));
+  };
 
   //Search onSubmit handler
   const setSearchQuery = (searchFormData: SearchForm) => {
@@ -28,6 +42,7 @@ export default function SearchPage() {
     setSearchState((previousState) => ({
       ...previousState,
       searchQuery: searchFormData.searchQuery,
+      page: 1,
     }));
   };
 
@@ -36,6 +51,7 @@ export default function SearchPage() {
     setSearchState((previousState) => ({
       ...previousState,
       searchQuery: "",
+      page: 1,
     }));
   };
 
@@ -60,7 +76,16 @@ export default function SearchPage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5 py-10">
-      <div id="cuisines-list">insert cuisines here</div>
+      <div id="cuisines-list">
+        <CuisineFilter
+          selectedCuisines={searchState.selectedCuisines}
+          onChange={setSelectedCuisines}
+          onExpandedClick={() => {
+            setIsExpended((prevState) => !prevState);
+          }}
+          isExpanded={isExpended}
+        />
+      </div>
       <div id="main-content" className="flex flex-col ">
         {/* SearchBar component  */}
         <SearchBar
