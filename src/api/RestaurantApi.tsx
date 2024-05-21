@@ -11,14 +11,16 @@ export const useSearchRestaurants = (
   const searchRestaurantRequest =
     async (): Promise<RestaurantSearchResponse> => {
       const params = new URLSearchParams();
+
       params.set("searchQuery", searchState.searchQuery);
+      params.set("page", searchState.page.toString());
 
       const response = await fetch(
         `${APP_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
       );
 
       if (!response.ok) {
-        throw new Error("Failed to search restaurant");
+        throw new Error("No Restaurant found!");
       }
       return response.json();
     };
@@ -32,7 +34,7 @@ export const useSearchRestaurants = (
   });
 
   if (isError) {
-    toast.error("Failed to search restaurant");
+    toast.error("No Restaurant found!");
   }
 
   return { results, isLoading };
