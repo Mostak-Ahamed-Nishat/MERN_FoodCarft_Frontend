@@ -1,12 +1,13 @@
 import { useGetRestaurant } from "@/api/RestaurantApi";
+import CheckoutButton from "@/components/CheckoutButton";
 import Loading from "@/components/Loading";
 import MenuItem from "@/components/MenuItem";
 import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card } from "@/components/ui/card";
+import { Card, CardFooter } from "@/components/ui/card";
 import { MenuItem as MenuItemType } from "@/types";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 export type CartItem = {
@@ -19,7 +20,10 @@ export type CartItem = {
 function DetailPage() {
   const { restaurantId } = useParams();
 
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  });
 
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
 
@@ -60,16 +64,30 @@ function DetailPage() {
         ];
       }
 
+      // Save updated cart items to session storage
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedCartItems)
+      );
+
       return updatedCartItems;
     });
   };
 
-  //Remove item from cart
-
+  // Remove item from cart
   const removeFromCart = (menuItem: MenuItemType) => {
     setCartItems((prevItems) => {
-      const updatedItem = prevItems.filter((item) => item._id !== menuItem._id);
-      return updatedItem;
+      const updatedItems = prevItems.filter(
+        (item) => item._id !== menuItem._id
+      );
+
+      // Save updated cart items to session storage
+      sessionStorage.setItem(
+        `cartItems-${restaurantId}`,
+        JSON.stringify(updatedItems)
+      );
+
+      return updatedItems;
     });
   };
 
@@ -104,11 +122,16 @@ function DetailPage() {
         {/* Right side checkout card */}
         <div>
           <Card>
+            {/* Order summary  */}
             <OrderSummary
               restaurant={restaurant}
               cartItems={cartItems}
               removeFromCart={removeFromCart}
             />
+            {/* Order footer button  */}
+            <CardFooter>
+              <CheckoutButton />
+            </CardFooter>
           </Card>
         </div>
       </div>

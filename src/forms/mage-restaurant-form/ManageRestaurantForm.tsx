@@ -7,7 +7,7 @@ import CuisinesSection from "./CuisinesSection";
 import { Separator } from "@/components/ui/separator";
 import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
-import LoadingButton from "@/components/LoadingButton";
+import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Restaurant } from "@/types";
 import { useEffect } from "react";
@@ -138,7 +138,7 @@ function ManageRestaurantForm({ onSave, isLoading, restaurant }: Props) {
         <MenuSection />
         <Separator className="my-4" />
         <ImageSection />
-        {isLoading ? <LoadingButton /> : <Button type="submit">Submit</Button>}
+        {isLoading ? <Loader /> : <Button type="submit">Submit</Button>}
       </form>
     </Form>
   );

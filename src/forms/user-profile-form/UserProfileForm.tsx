@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import LoadingButton from "@/components/LoadingButton";
+import Loader from "@/components/Loader";
 import { SafeUser } from "@/types";
 import { useEffect } from "react";
 
@@ -144,7 +144,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
           </div>
 
           {isLoading ? (
-            <LoadingButton />
+            <Loader />
           ) : (
             <Button className=" bg-orange-500" type="submit">
               Submit

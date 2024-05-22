@@ -1,4 +1,4 @@
-import { Auth0Provider } from "@auth0/auth0-react";
+import { AppState, Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
@@ -18,9 +18,9 @@ function Auth0ProviderWithNavigate({ children }: Props) {
 
   // appState: store some data that we might need later.EX: current url that user on before we redirect to the login
 
-  const onTheTimeThatRedirecting = () => {
+  const onTheTimeThatRedirecting = (appState?: AppState) => {
     //if user successfully created through Auth0 then create user into our DB using auth0 data; user.sub=auth0Id
-    navigate("/auth-callback");
+    navigate(appState?.returnTo || "/auth-callback");
   };
 
   return (
