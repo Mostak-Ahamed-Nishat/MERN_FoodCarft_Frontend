@@ -6,6 +6,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
+import DetailPage from "./pages/DetailPage";
 
 const AppRoutes = () => {
   return (
@@ -40,16 +41,25 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-
-        <Route
-          path="/search/:city"
-          element={
-            <Layout>
-              <SearchPage />
-            </Layout>
-          }
-        />
       </Route>
+
+      <Route
+        path="/search/:city"
+        element={
+          <Layout>
+            <SearchPage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/detail/:restaurantId"
+        element={
+          <Layout>
+            <DetailPage />
+          </Layout>
+        }
+      />
 
       {/* if any route is not available catch all the invalid route and redirect to the root page */}
       <Route path="*" element={<Navigate to="/" />} />

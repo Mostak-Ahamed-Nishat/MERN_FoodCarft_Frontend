@@ -35,3 +35,5 @@ export type RestaurantSearchResponse = {
     pages: number;
   };
 };
+
+

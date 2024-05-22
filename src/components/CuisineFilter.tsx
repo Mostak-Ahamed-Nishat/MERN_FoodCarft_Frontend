@@ -18,9 +18,13 @@ const CuisineFilter = ({
   onExpandedClick,
 }: Props) => {
   const handleCuisinesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    //get the targeted clicked cuisine item
     const clickedCuisine = event.target.value;
+
+    // is the cuisine isChecked or not
     const isChecked = event.target.checked;
 
+    //If the item checked then add to the selectedCuisines array otherwise remove it
     const newCuisinesList = isChecked
       ? [...selectedCuisines, clickedCuisine]
       : selectedCuisines.filter((cuisine) => cuisine !== clickedCuisine);
@@ -28,7 +32,9 @@ const CuisineFilter = ({
     onChange(newCuisinesList);
   };
 
+  //Reset every filter and set a empty filter
   const handleCuisinesReset = () => onChange([]);
+
   return (
     <>
       <div className="flex justify-between items-center px-2">

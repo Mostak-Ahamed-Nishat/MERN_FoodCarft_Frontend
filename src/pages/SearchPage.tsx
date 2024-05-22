@@ -8,6 +8,7 @@ import { SearchForm } from "../components/SearchBar";
 import PaginationSelector from "@/components/PaginationSelector";
 import CuisineFilter from "@/components/CuisineFilter";
 import SortOptionDropdown from "@/components/SortOptionDropdown";
+import Loading from "@/components/Loading";
 
 //for search by cuisine or restaurant name
 export type SearchState = {
@@ -78,7 +79,9 @@ export default function SearchPage() {
   };
 
   if (isLoading) {
-    <span>Loading....</span>;
+    <div className="flex justify-center items-center">
+      <Loading />
+    </div>;
   }
 
   if (!results?.data || !city) {
@@ -87,6 +90,7 @@ export default function SearchPage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-5 py-10">
+      {/* Filter options  */}
       <div id="cuisines-list">
         <CuisineFilter
           selectedCuisines={searchState.selectedCuisines}
@@ -97,6 +101,8 @@ export default function SearchPage() {
           isExpanded={isExpended}
         />
       </div>
+
+      {/* Restaurant list  */}
       <div id="main-content" className="flex flex-col ">
         {/* SearchBar component  */}
         <SearchBar
