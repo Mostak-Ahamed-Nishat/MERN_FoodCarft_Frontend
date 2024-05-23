@@ -1,3 +1,4 @@
+import { useCreateCheckoutSession } from "@/api/OrderApi";
 import { useGetRestaurant } from "@/api/RestaurantApi";
 import CheckoutButton from "@/components/CheckoutButton";
 import Loading from "@/components/Loading";
@@ -6,9 +7,11 @@ import OrderSummary from "@/components/OrderSummary";
 import RestaurantInfo from "@/components/RestaurantInfo";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
+import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { MenuItem as MenuItemType } from "@/types";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export type CartItem = {
   _id: string;
@@ -18,14 +21,20 @@ export type CartItem = {
 };
 
 function DetailPage() {
+  //Get the restaurantId from parameter
   const { restaurantId } = useParams();
+  const { restaurant, isLoading } = useGetRestaurant(restaurantId);
+
+  const {
+    createCheckoutSession,
+    isLoading: isCheckoutLoading,
+    reset,
+  } = useCreateCheckoutSession();
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
     return storedCartItems ? JSON.parse(storedCartItems) : [];
   });
-
-  const { restaurant, isLoading } = useGetRestaurant(restaurantId);
 
   if (isLoading) {
     return (
@@ -91,6 +100,41 @@ function DetailPage() {
     });
   };
 
+  //Checkout
+
+  const onCheckout = async (userFormData: UserFormData) => {
+    if (!restaurant) {
+      return;
+    }
+
+    //Create the cartItem object to send the API
+    const checkoutData = {
+      cartItems: cartItems.map((cartItem) => ({
+        menuItemId: cartItem._id,
+        name: cartItem.name,
+        quantity: cartItem.quantity.toString(),
+      })),
+      restaurantId: restaurant._id,
+      deliveryDetails: {
+        name: userFormData.name,
+        addressLine1: userFormData.addressLine1,
+        city: userFormData.city,
+        country: userFormData.country,
+        email: userFormData.email as string,
+      },
+    };
+
+    const data = await createCheckoutSession(checkoutData);
+    //Redirect to the url that stripe return
+    if (data && data.url) {
+      // Redirect to the URL that Stripe returns
+      window.location.href = data.url;
+    } else {
+      // Handle error case when URL is not present
+      toast.error("Error: Checkout session URL not found.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-10 my-8">
       {/* Header Image */}
@@ -130,7 +174,11 @@ function DetailPage() {
             />
             {/* Order footer button  */}
             <CardFooter>
-              <CheckoutButton />
+              <CheckoutButton
+                disabled={cartItems.length == 0}
+                onCheckout={onCheckout}
+                isLoading={isCheckoutLoading}
+              />
             </CardFooter>
           </Card>
         </div>
