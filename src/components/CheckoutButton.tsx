@@ -28,6 +28,7 @@ export default function CheckoutButton({
   const { pathname } = useLocation();
 
   const { currentUser, isLoading: isGetUserLoading } = useGetUser();
+  
   const onLogin = async () => {
     await loginWithRedirect({
       appState: {
