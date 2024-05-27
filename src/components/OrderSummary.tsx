@@ -23,7 +23,8 @@ export default function OrderSummary({
         0
       ) || 0;
 
-    const totalWithDelivery = totalInPence + (restaurant?.deliveryPrice || 0);
+    const deliveryPrice = restaurant?.deliveryPrice ?? (0 as number);
+    const totalWithDelivery = totalInPence + deliveryPrice;
 
     return (totalWithDelivery / 100).toFixed(2);
   };
@@ -59,7 +60,7 @@ export default function OrderSummary({
         <Separator />
         <div className="flex justify-between">
           <span>Delivery</span>
-          <span>£{(restaurant?.deliveryPrice / 100).toFixed(2)}</span>
+          <span>£{((restaurant?.deliveryPrice ?? 0) / 100).toFixed(2)}</span>
         </div>
         <Separator />
       </CardContent>
