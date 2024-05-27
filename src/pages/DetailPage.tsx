@@ -204,10 +204,8 @@ export type CartItem = {
 // }
 
 function DetailPage() {
-  // Get the restaurantId from parameter
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
-
   const { createCheckoutSession, isLoading: isCheckoutLoading } =
     useCreateCheckoutSession();
 
@@ -224,16 +222,13 @@ function DetailPage() {
     );
   }
 
-  // Add item to cart
   const addToCart = (menuItem: MenuItemType) => {
     setCartItems((prevCartItems) => {
-      // Check if the item already exists in the cart
       const existingCartItem = prevCartItems.find(
         (cartItem) => cartItem._id === menuItem._id
       );
       let updatedCartItems;
 
-      // If the item is already in the cart, increase the quantity
       if (existingCartItem) {
         updatedCartItems = prevCartItems.map((cartItem) =>
           cartItem._id === existingCartItem._id
@@ -241,7 +236,6 @@ function DetailPage() {
             : cartItem
         );
       } else {
-        // If the item is not in the cart, add the item with quantity 1
         updatedCartItems = [
           ...prevCartItems,
           {
@@ -253,7 +247,6 @@ function DetailPage() {
         ];
       }
 
-      // Save updated cart items to session storage
       sessionStorage.setItem(
         `cartItems-${restaurantId}`,
         JSON.stringify(updatedCartItems)
@@ -263,14 +256,12 @@ function DetailPage() {
     });
   };
 
-  // Remove item from cart
   const removeFromCart = (cartItem: CartItem) => {
     setCartItems((prevItems) => {
       const updatedItems = prevItems.filter(
         (item) => item._id !== cartItem._id
       );
 
-      // Save updated cart items to session storage
       sessionStorage.setItem(
         `cartItems-${restaurantId}`,
         JSON.stringify(updatedItems)
@@ -280,13 +271,11 @@ function DetailPage() {
     });
   };
 
-  // Checkout
   const onCheckout = async (userFormData: UserFormData) => {
     if (!restaurant) {
       return;
     }
 
-    // Create the cartItem object to send to the API
     const checkoutData = {
       cartItems: cartItems.map((cartItem) => ({
         menuItemId: cartItem._id,
@@ -304,7 +293,6 @@ function DetailPage() {
     };
 
     const data = await createCheckoutSession(checkoutData);
-    // Redirect to the URL that Stripe returns
     if (data && data.url) {
       window.location.href = data.url;
     } else {
@@ -314,23 +302,16 @@ function DetailPage() {
 
   return (
     <div className="flex flex-col gap-10 my-8">
-      {/* Header Image */}
       <AspectRatio ratio={16 / 5}>
         <img
           src={restaurant?.imageUrl}
           className="rounded-md object-cover h-full w-full"
         />
       </AspectRatio>
-      {/* Menu Items and checkout grid */}
       <div className="grid md:grid-cols-[4fr_2fr] gap-5">
-        {/* Left side menu item */}
         <div>
-          {/* Restaurant header info */}
           <RestaurantInfo restaurant={restaurant} />
-
-          {/* Restaurant Item list */}
           <div className="text-2xl font-bold tracking-tight py-6">Menu</div>
-
           {restaurant?.menuItems.map((menuItem) => (
             <MenuItem
               key={menuItem._id}
@@ -339,20 +320,16 @@ function DetailPage() {
             />
           ))}
         </div>
-
-        {/* Right side checkout card */}
         <div>
           <Card>
-            {/* Order summary  */}
             <OrderSummary
               restaurant={restaurant}
               cartItems={cartItems}
               removeFromCart={removeFromCart}
             />
-            {/* Order footer button  */}
             <CardFooter>
               <CheckoutButton
-                disabled={cartItems.length == 0}
+                disabled={cartItems.length === 0}
                 onCheckout={onCheckout}
                 isLoading={isCheckoutLoading}
               />
