@@ -6,8 +6,8 @@ import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
 
 type Props = {
-  restaurant: Restaurant;
-  cartItems: CartItem;
+  restaurant?: Restaurant;
+  cartItems?: CartItem[];
   removeFromCart: (cartItem: CartItem) => void;
 };
 
@@ -17,12 +17,13 @@ export default function OrderSummary({
   removeFromCart,
 }: Props) {
   const getTotalCost = () => {
-    const totalInPence = cartItems?.reduce(
-      (total, cartItem) => total + cartItem.price * cartItem.quantity,
-      0
-    );
+    const totalInPence =
+      cartItems?.reduce(
+        (total, cartItem) => total + cartItem.price * cartItem.quantity,
+        0
+      ) || 0;
 
-    const totalWithDelivery = totalInPence + restaurant.deliveryPrice;
+    const totalWithDelivery = totalInPence + (restaurant?.deliveryPrice || 0);
 
     return (totalWithDelivery / 100).toFixed(2);
   };
@@ -37,7 +38,7 @@ export default function OrderSummary({
       </CardHeader>
       <CardContent className="flex flex-col gap-5">
         {cartItems?.map((item) => (
-          <div className="flex justify-between">
+          <div key={item._id} className="flex justify-between">
             <span>
               <Badge variant="outline" className="mr-2">
                 {item.quantity}
@@ -58,7 +59,7 @@ export default function OrderSummary({
         <Separator />
         <div className="flex justify-between">
           <span>Delivery</span>
-          <span>£{(restaurant.deliveryPrice / 100).toFixed(2)}</span>
+          <span>£{(restaurant?.deliveryPrice / 100).toFixed(2)}</span>
         </div>
         <Separator />
       </CardContent>

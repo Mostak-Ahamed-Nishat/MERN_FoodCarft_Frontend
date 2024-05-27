@@ -9,12 +9,12 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardFooter } from "@/components/ui/card";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { MenuItem as MenuItemType } from "@/types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export type CartItem = {
-  _id: string;
+  _id: string | undefined;
   name: string;
   price: number;
   quantity: number;
@@ -25,11 +25,13 @@ function DetailPage() {
   const { restaurantId } = useParams();
   const { restaurant, isLoading } = useGetRestaurant(restaurantId);
 
-  const {
-    createCheckoutSession,
-    isLoading: isCheckoutLoading,
-    reset,
-  } = useCreateCheckoutSession();
+  const { createCheckoutSession, isLoading: isCheckoutLoading } =
+    useCreateCheckoutSession();
+
+  // const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+  //   const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
+  //   return storedCartItems ? JSON.parse(storedCartItems) : [];
+  // });
 
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     const storedCartItems = sessionStorage.getItem(`cartItems-${restaurantId}`);
@@ -108,6 +110,7 @@ function DetailPage() {
     }
 
     //Create the cartItem object to send the API
+    // **************
     const checkoutData = {
       cartItems: cartItems.map((cartItem) => ({
         menuItemId: cartItem._id,
@@ -172,6 +175,7 @@ function DetailPage() {
               cartItems={cartItems}
               removeFromCart={removeFromCart}
             />
+
             {/* Order footer button  */}
             <CardFooter>
               <CheckoutButton
