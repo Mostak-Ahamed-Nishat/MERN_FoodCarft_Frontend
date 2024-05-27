@@ -17,7 +17,10 @@ function UserProfilePage() {
     <UserProfileForm
       currentUser={currentUser}
       onSave={updateUser}
-      isLoading={isLoading}  />
+      isLoading={isLoading}
+      title="User Profile"
+      buttonText="Submit"
+    />
   );
 }
 
