@@ -7,6 +7,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
 import DetailPage from "./pages/DetailPage";
+import OrderStatusPage from "./pages/OrderStatusPage";
 
 const AppRoutes = () => {
   return (
@@ -19,10 +20,13 @@ const AppRoutes = () => {
           </Layout>
         }
       />
+
       {/* Auth callback route  */}
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
+
       {/* User profile route  */}
-      {/* Protected route for only authenticated user  */}
+
+      {/* Protected route for only authenticated user start */}
       <Route element={<ProtectedRoute />}>
         <Route
           path="/user-profile"
@@ -32,6 +36,7 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+
         {/* Manage Restaurant   */}
         <Route
           path="/manage-restaurant"
@@ -41,7 +46,17 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+
+        <Route
+          path="/order-status"
+          element={
+            <Layout>
+              <OrderStatusPage />
+            </Layout>
+          }
+        />
       </Route>
+      {/* Protected route for only authenticated user end */}
 
       <Route
         path="/search/:city"

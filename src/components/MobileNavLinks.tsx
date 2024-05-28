@@ -13,7 +13,13 @@ export default function MobileNavLinks() {
       >
         User Profile
       </Link>
-
+      <Separator />
+      <Link
+        className="flex bg-white items-center font-bold hover:text-orange-500 py-4"
+        to="/order-status"
+      >
+        Order Status
+      </Link>
       <Separator />
       <Link
         to="/manage-restaurant"
