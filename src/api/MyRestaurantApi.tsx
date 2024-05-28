@@ -32,7 +32,7 @@ export const useGetMyRestaurant = () => {
   return { restaurant, isLoading };
 };
 
-// create restauran  : Promise<SafeRestaurant>
+// create restaurant  : Promise<SafeRestaurant>
 export const useCreateMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
   const queryClient = useQueryClient();
@@ -120,4 +120,35 @@ export const useUpdateMyRestaurant = () => {
   );
 
   return { updateRestaurant, isLoading };
+};
+
+//Get the orders from customer
+
+export const useGetMyRestaurantOrders = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const getMyRestaurantOrdersRequest = async () => {
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/api/my/restaurant/orders`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to get the orders for restaurant owner");
+    }
+  };
+
+  const {
+    data: getOrders,
+    isLoading,
+    error,
+  } = useQuery("fetchMyRestaurantOrders", getMyRestaurantOrdersRequest);
+
+  if (error) {
+    toast.error(error.toString());
+  }
+
+  return { getOrders, isLoading };
 };
