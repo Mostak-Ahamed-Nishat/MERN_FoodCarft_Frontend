@@ -28,7 +28,9 @@ export const useGetMyOrders = () => {
     data: orders,
     isLoading,
     error,
-  } = useQuery("fetchMyOrders", getMyOrderRequest);
+  } = useQuery("fetchMyOrders", getMyOrderRequest, {
+    refetchInterval: 5000,
+  });
 
   if (error) {
     toast.error(error.toString());
