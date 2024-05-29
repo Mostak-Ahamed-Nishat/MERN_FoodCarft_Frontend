@@ -1,12 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "./ui/button";
 import { useLocation } from "react-router-dom";
-import Loader from "./Loader";
+
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import UserProfileForm, {
   UserFormData,
 } from "@/forms/user-profile-form/UserProfileForm";
 import { useGetUser } from "@/api/MyUserApi";
+import Loading from "./Loading";
 
 type Props = {
   onCheckout: (userFormData: UserFormData) => void;
@@ -28,7 +29,7 @@ export default function CheckoutButton({
   const { pathname } = useLocation();
 
   const { currentUser, isLoading: isGetUserLoading } = useGetUser();
-  
+
   const onLogin = async () => {
     await loginWithRedirect({
       appState: {
@@ -49,7 +50,7 @@ export default function CheckoutButton({
   if (isAuthLoading || !currentUser || isLoading) {
     return (
       <div className="flex justify-center align-middle items-center">
-        <Loader />
+        <Loading />
       </div>
     );
   }

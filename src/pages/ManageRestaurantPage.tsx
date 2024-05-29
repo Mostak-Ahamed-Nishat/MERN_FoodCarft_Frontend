@@ -44,7 +44,7 @@ export default function ManageRestaurantPage() {
 
         <TabsContent
           value="orders"
-          className=" space-y-5 bg-gray-50 pg-10 rounded-lg p-6"
+          className=" space-y-5 bg-gray-50 pg-10 rounded-lg p-8 mb-6"
         >
           <h2 className="text-2xl font-bold">
             {getOrders?.length} Active Orders

@@ -85,7 +85,11 @@ export default function SearchPage() {
   }
 
   if (!results?.data || !city) {
-    return <span>No results found</span>;
+    return (
+      <div className=" h-screen flex justify-center items-center">
+        <p>No results found</p>
+      </div>
+    );
   }
 
   return (

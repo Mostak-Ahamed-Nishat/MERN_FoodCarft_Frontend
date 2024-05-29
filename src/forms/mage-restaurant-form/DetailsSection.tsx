@@ -75,7 +75,8 @@ export default function DetailsSection() {
             )}
           />
         </div>
-        <div className="flex gap-4">
+
+        <div className="flex flex-col gap-4">
           <FormField
             control={control}
             name="deliveryPrice"

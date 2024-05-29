@@ -18,7 +18,7 @@ export default function OrderStatusPage() {
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 mt-10 mb-6">
       {orders.map((order) => (
         <div className="space-y-10 bg-gray-50 p-10 rounded-lg">
           <OrderStatusHeader order={order} />

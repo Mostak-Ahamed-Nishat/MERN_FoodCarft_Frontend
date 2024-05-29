@@ -7,10 +7,10 @@ import CuisinesSection from "./CuisinesSection";
 import { Separator } from "@/components/ui/separator";
 import MenuSection from "./MenuSection";
 import ImageSection from "./ImageSection";
-import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Restaurant } from "@/types";
 import { useEffect } from "react";
+import Loading from "@/components/Loading";
 
 // Zod Validation
 const formSchema = z
@@ -128,7 +128,7 @@ function ManageRestaurantForm({ onSave, isLoading, restaurant }: Props) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" space-y-8 bg-gray-50 p-10 rounded-lg  "
+        className=" space-y-8 bg-gray-50 p-10 rounded-lg mb-6 "
       >
         <DetailsSection />
         <Separator className="my-4" />
@@ -138,7 +138,7 @@ function ManageRestaurantForm({ onSave, isLoading, restaurant }: Props) {
         <MenuSection />
         <Separator className="my-4" />
         <ImageSection />
-        {isLoading ? <Loader /> : <Button type="submit">Submit</Button>}
+        {isLoading ? <Loading /> : <Button type="submit">Submit</Button>}
       </form>
     </Form>
   );

@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Loader from "@/components/Loader";
 import { SafeUser } from "@/types";
 import { useEffect } from "react";
+import Loading from "@/components/Loading";
 
 const formSchema = z.object({
   //email is optional because it's readonly field. No need to add validation it'll always be there
@@ -152,7 +152,7 @@ const UserProfileForm = ({
           </div>
 
           {isLoading ? (
-            <Loader />
+            <Loading />
           ) : (
             <Button className=" bg-orange-500" type="submit">
               {buttonText}
